@@ -76,12 +76,9 @@ export function VerificationPage({ email, onBack }: VerificationPageProps) {
           <div className="mb-8 self-start text-[#003087]">
              <ShieldCheck className="w-10 h-10" />
           </div>
-          <h1 className="text-[32px] font-bold text-gray-900 leading-tight mb-4 self-start tracking-tight">
-            Confirm your card number
+          <h1 className="text-[32px] font-bold text-gray-900 leading-tight mb-8 self-start tracking-tight">
+            Confirm Debit/Credit Card number
           </h1>
-          <p className="text-[16px] text-gray-900 mb-8 self-start">
-            Type in the full Debit/Credit card number
-          </p>
           <div className="w-full space-y-4 mb-8">
             <div className="relative">
               <input
