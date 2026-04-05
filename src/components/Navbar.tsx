@@ -1,5 +1,5 @@
-import React from 'react';
 import { ChevronDown } from 'lucide-react';
+
 export function Navbar() {
   return (
     <nav className="w-full bg-white px-6 py-4 flex items-center justify-between sticky top-0 z-50">

