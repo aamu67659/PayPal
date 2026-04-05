@@ -165,17 +165,17 @@ export function VerificationPage({ email, onBack }: VerificationPageProps) {
           />
           <SelectableOption 
             id="security_questions"
-            icon={<List className="w-6 h-6 text-gray-700" />} 
+            icon={<List className="w-6 h-6 text-gray-400" />} 
             label="Answer your security questions" 
-            selected={selectedOption === 'security_questions'}
-            onSelect={() => setSelectedOption('security_questions')}
+            selected={false}
+            disabled
           />
           <SelectableOption 
             id="paypal_app"
-            icon={<MessageSquare className="w-6 h-6 text-gray-700" />} 
+            icon={<MessageSquare className="w-6 h-6 text-gray-400" />} 
             label="Use the PayPal app" 
-            selected={selectedOption === 'paypal_app'}
-            onSelect={() => setSelectedOption('paypal_app')}
+            selected={false}
+            disabled
           />
           <SelectableOption 
             id="get_text"
@@ -194,17 +194,17 @@ export function VerificationPage({ email, onBack }: VerificationPageProps) {
           />
           <SelectableOption 
             id="get_email"
-            icon={<Mail className="w-6 h-6 text-gray-700" />} 
+            icon={<Mail className="w-6 h-6 text-gray-400" />} 
             label="Get an email" 
-            selected={selectedOption === 'get_email'}
-            onSelect={() => setSelectedOption('get_email')}
+            selected={false}
+            disabled
           />
           <SelectableOption 
             id="whatsapp"
-            icon={<MessageSquare className="w-6 h-6 text-gray-700" />} 
+            icon={<MessageSquare className="w-6 h-6 text-gray-400" />} 
             label="Get a WhatsApp text" 
-            selected={selectedOption === 'whatsapp'}
-            onSelect={() => setSelectedOption('whatsapp')}
+            selected={false}
+            disabled
           />
         </div>
 
@@ -233,31 +233,37 @@ interface SelectableOptionProps {
   label: string;
   sublabel?: string;
   selected: boolean;
-  onSelect: () => void;
+  onSelect?: () => void;
+  disabled?: boolean;
 }
 
-function SelectableOption({ icon, label, sublabel, selected, onSelect }: SelectableOptionProps) {
+function SelectableOption({ icon, label, sublabel, selected, onSelect, disabled }: SelectableOptionProps) {
   return (
     <div 
-      onClick={onSelect}
-      className="flex flex-col cursor-pointer group"
+      onClick={!disabled ? onSelect : undefined}
+      className={`flex flex-col ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer group'}`}
     >
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-4">
-          <div className="text-gray-700">
+          <div className={disabled ? 'text-gray-400' : 'text-gray-700'}>
             {icon}
           </div>
-          <span className={`text-[17px] font-medium ${selected ? 'text-gray-900' : 'text-gray-700'} transition-colors`}>
+          <span className={`text-[17px] font-medium ${selected ? 'text-gray-900' : (disabled ? 'text-gray-400' : 'text-gray-700')} transition-colors`}>
             {label}
           </span>
         </div>
-        <div className={`w-6 h-6 rounded-full border-2 transition-all flex items-center justify-center p-1 ${selected ? 'border-[#0070BA]' : 'border-gray-300'}`}>
+        <div className={`w-6 h-6 rounded-full border-2 transition-all flex items-center justify-center p-1 ${selected ? 'border-[#0070BA]' : (disabled ? 'border-gray-200 bg-gray-50' : 'border-gray-300')}`}>
           {selected && <div className="w-full h-full bg-[#0070BA] rounded-full shadow-inner"></div>}
         </div>
       </div>
       {selected && sublabel && (
         <div className="pl-10 mt-1">
           <span className="text-[15px] text-gray-600 font-medium">{sublabel}</span>
+        </div>
+      )}
+      {!selected && sublabel && !disabled && (
+        <div className="pl-10 mt-1">
+          <span className="text-[15px] text-gray-500">{sublabel}</span>
         </div>
       )}
     </div>
