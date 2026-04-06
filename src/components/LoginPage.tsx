@@ -37,7 +37,7 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
     if (step === 'loading') {
       const timer = setTimeout(() => {
         setStep('password');
-      }, 1000);
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [step]);

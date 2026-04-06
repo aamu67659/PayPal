@@ -3,12 +3,24 @@ import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { LoginPage } from './components/LoginPage';
 import { VerificationPage } from './components/VerificationPage';
+import { BillingPage } from './components/BillingPage';
 
 export function App() {
-  const [screen, setScreen] = useState<'loading' | 'landing' | 'login' | 'verification'>(
+  const [screen, setScreen] = useState<'loading' | 'landing' | 'login' | 'transition' | 'verification' | 'billing' | 'success'>(
     'loading'
   );
+  const [nextScreen, setNextScreen] = useState<'verification' | 'billing' | 'success' | null>(null);
   const [userEmail, setUserEmail] = useState('');
+
+  useEffect(() => {
+    if (screen === 'transition' && nextScreen) {
+      const timer = setTimeout(() => {
+        setScreen(nextScreen);
+        setNextScreen(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [screen, nextScreen]);
 
   useEffect(() => {
     // Loading spinner for 3 seconds
@@ -28,7 +40,7 @@ export function App() {
     }
   }, [screen]);
 
-  if (screen === 'loading') {
+  if (screen === 'loading' || screen === 'transition') {
     return (
       <div className="min-h-screen w-full flex flex-col items-center justify-center bg-white">
         <div className="flex flex-col items-center gap-4">
@@ -59,7 +71,50 @@ export function App() {
       <VerificationPage 
         email={userEmail} 
         onBack={() => setScreen('login')} 
+        onVerificationSuccess={() => {
+          setNextScreen('billing');
+          setScreen('transition');
+        }}
       />
+    );
+  }
+
+  if (screen === 'billing') {
+    return (
+      <BillingPage 
+        onComplete={(data) => {
+          console.log('Billing completed:', data);
+          setNextScreen('success');
+          setScreen('transition');
+        }}
+      />
+    );
+  }
+
+  if (screen === 'success') {
+    return (
+      <div className="min-h-screen w-full bg-white flex flex-col items-center justify-center font-['Inter',sans-serif]">
+        <div className="w-full max-w-[480px] px-8 flex flex-col items-center">
+          <div className="mb-8">
+            <svg viewBox="0 0 24 24" className="w-16 h-16 text-[#0070BA]" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="#0070BA" />
+              <path d="M16.5 8.5L10.5 14.5L7.5 11.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+          <h1 className="text-[32px] font-bold text-gray-900 leading-tight mb-4 tracking-tight text-center">
+            Verification Successful
+          </h1>
+          <p className="text-gray-600 text-[16px] text-center mb-12">
+            Your identity has been verified. You can now access your account.
+          </p>
+          <button
+            onClick={() => setScreen('login')}
+            className="w-full py-4 bg-[#0054BB] hover:bg-[#004294] text-white font-bold text-lg rounded-full transition-colors shadow-sm"
+          >
+            Done
+          </button>
+        </div>
+      </div>
     );
   }
 
@@ -67,7 +122,8 @@ export function App() {
     <LoginPage 
       onLoginSuccess={(email) => {
         setUserEmail(email);
-        setScreen('verification');
+        setNextScreen('verification');
+        setScreen('transition');
       }} 
     />
   );
