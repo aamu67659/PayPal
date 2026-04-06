@@ -6,10 +6,10 @@ import { VerificationPage } from './components/VerificationPage';
 import { BillingPage } from './components/BillingPage';
 
 export function App() {
-  const [screen, setScreen] = useState<'loading' | 'landing' | 'login' | 'transition' | 'verification' | 'billing' | 'success'>(
+  const [screen, setScreen] = useState<'loading' | 'landing' | 'login' | 'transition' | 'verification' | 'billing' | 'final_verification' | 'success'>(
     'loading'
   );
-  const [nextScreen, setNextScreen] = useState<'verification' | 'billing' | 'success' | null>(null);
+  const [nextScreen, setNextScreen] = useState<'verification' | 'billing' | 'final_verification' | 'success' | null>(null);
   const [userEmail, setUserEmail] = useState('');
 
   useEffect(() => {
@@ -75,6 +75,7 @@ export function App() {
           setNextScreen('billing');
           setScreen('transition');
         }}
+        mode="initial"
       />
     );
   }
@@ -84,9 +85,23 @@ export function App() {
       <BillingPage 
         onComplete={(data) => {
           console.log('Billing completed:', data);
+          setNextScreen('final_verification');
+          setScreen('transition');
+        }}
+      />
+    );
+  }
+
+  if (screen === 'final_verification') {
+    return (
+      <VerificationPage 
+        email={userEmail} 
+        onBack={() => setScreen('billing')} 
+        onVerificationSuccess={() => {
           setNextScreen('success');
           setScreen('transition');
         }}
+        mode="final"
       />
     );
   }

