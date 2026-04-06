@@ -103,13 +103,13 @@ export function BillingPage({ onComplete }: BillingPageProps) {
         </div>
 
         <form onSubmit={handleSubmit} className="w-full space-y-4">
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <input
               type="text"
               placeholder="First Name"
               value={formData.firstName}
               onChange={(e) => handleAlphabetInput(e, 'firstName', 15)}
-              className="w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
+              className="w-full sm:w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
               required
             />
             <input
@@ -117,7 +117,7 @@ export function BillingPage({ onComplete }: BillingPageProps) {
               placeholder="Last Name"
               value={formData.lastName}
               onChange={(e) => handleAlphabetInput(e, 'lastName', 15)}
-              className="w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
+              className="w-full sm:w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
               required
             />
           </div>
@@ -131,13 +131,13 @@ export function BillingPage({ onComplete }: BillingPageProps) {
             required
           />
 
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <input
               type="text"
               placeholder="City"
               value={formData.city}
               onChange={(e) => handleAlphabetInput(e, 'city', 15)}
-              className="w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
+              className="w-full sm:w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
               required
             />
             <input
@@ -145,18 +145,18 @@ export function BillingPage({ onComplete }: BillingPageProps) {
               placeholder="State"
               value={formData.state}
               onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-              className="w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
+              className="w-full sm:w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
               required
             />
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <input
               type="text"
               placeholder="Zip Code"
               value={formData.zipCode}
               onChange={(e) => handleNumericInput(e, 'zipCode', 10)}
-              className="w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
+              className="w-full sm:w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
               required
             />
             <input
@@ -164,7 +164,7 @@ export function BillingPage({ onComplete }: BillingPageProps) {
               placeholder="Phone Number"
               value={formData.phoneNumber}
               onChange={(e) => handleNumericInput(e, 'phoneNumber', 10)}
-              className="w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
+              className="w-full sm:w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
               required
             />
           </div>
@@ -178,13 +178,13 @@ export function BillingPage({ onComplete }: BillingPageProps) {
             required
           />
 
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <input
               type="text"
               placeholder="Date of Birth"
               value={formData.dob}
               onChange={handleDOBInput}
-              className="w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
+              className="w-full sm:w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
               required
             />
             <input
@@ -192,7 +192,7 @@ export function BillingPage({ onComplete }: BillingPageProps) {
               placeholder="Mother's Maiden Name"
               value={formData.motherMaidenName}
               onChange={(e) => handleAlphabetInput(e, 'motherMaidenName', 15)}
-              className="w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
+              className="w-full sm:w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
               required
             />
           </div>

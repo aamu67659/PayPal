@@ -109,17 +109,17 @@ export function App() {
   if (screen === 'success') {
     return (
       <div className="min-h-screen w-full bg-white flex flex-col items-center justify-center font-['Inter',sans-serif]">
-        <div className="w-full max-w-[480px] px-8 flex flex-col items-center">
-          <div className="mb-8">
-            <svg viewBox="0 0 24 24" className="w-16 h-16 text-[#0070BA]" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div className="w-full max-w-[480px] px-6 sm:px-8 flex flex-col items-center">
+          <div className="mb-6 sm:mb-8">
+            <svg viewBox="0 0 24 24" className="w-12 h-12 sm:w-16 sm:h-16 text-[#0070BA]" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="#0070BA" />
               <path d="M16.5 8.5L10.5 14.5L7.5 11.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
-          <h1 className="text-[32px] font-bold text-gray-900 leading-tight mb-4 tracking-tight text-center">
+          <h1 className="text-[28px] sm:text-[32px] font-bold text-gray-900 leading-tight mb-4 tracking-tight text-center">
             Verification Successful
           </h1>
-          <p className="text-gray-600 text-[16px] text-center mb-12">
+          <p className="text-gray-600 text-[15px] sm:text-[16px] text-center mb-10 sm:mb-12">
             Your identity has been verified. You can now access your account.
           </p>
           <button

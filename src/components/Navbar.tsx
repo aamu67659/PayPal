@@ -36,17 +36,16 @@ export function Navbar() {
       </div>
 
       {/* Right Side Actions */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-4">
         <a
           href="#"
           className="hidden md:block text-sm font-semibold text-gray-900 hover:underline mr-2">
-          
           Help
         </a>
-        <button className="px-6 py-2.5 rounded-full border-2 border-gray-900 text-gray-900 font-bold text-sm hover:bg-gray-50 transition-colors">
+        <button className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-full border-2 border-gray-900 text-gray-900 font-bold text-[13px] sm:text-sm hover:bg-gray-50 transition-colors">
           Log In
         </button>
-        <button className="px-6 py-2.5 rounded-full bg-gray-900 text-white font-bold text-sm hover:bg-gray-800 transition-colors">
+        <button className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-gray-900 text-white font-bold text-[13px] sm:text-sm hover:bg-gray-800 transition-colors">
           Sign Up
         </button>
       </div>

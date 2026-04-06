@@ -23,12 +23,12 @@ export function HeroSection() {
       </div>
 
       {/* Main Heading */}
-      <h1 className="text-6xl md:text-[5.5rem] lg:text-[7rem] font-black text-gray-900 text-center leading-[1.05] tracking-tight max-w-5xl mb-16 z-10">
+      <h1 className="text-4xl sm:text-6xl md:text-[5.5rem] lg:text-[7rem] font-black text-gray-900 text-center leading-[1.05] tracking-tight max-w-5xl mb-8 sm:mb-16 z-10">
         Pay, send, and save smarter
       </h1>
 
       {/* Phone Mockup */}
-      <div className="w-full max-w-[400px] h-[500px] bg-white rounded-t-[3rem] shadow-2xl flex flex-col items-center pt-10 px-6 z-10 relative mt-auto translate-y-12">
+      <div className="w-full max-w-[320px] sm:max-w-[400px] h-[400px] sm:h-[500px] bg-white rounded-t-[2.5rem] sm:rounded-t-[3rem] shadow-2xl flex flex-col items-center pt-8 sm:pt-10 px-6 z-10 relative mt-auto translate-y-12 sm:translate-y-16">
         {/* PayPal Text Logo inside mockup */}
         <div className="text-4xl font-black tracking-tighter text-gray-900 mb-8 flex items-center">
           <span className="text-[#003087]">Pay</span>
@@ -44,10 +44,10 @@ export function HeroSection() {
       </div>
 
       {/* QR Code Floating Button */}
-      <div className="fixed bottom-8 right-8 z-50">
-        <button className="bg-gray-900 text-white p-3 rounded-2xl shadow-xl hover:scale-105 transition-transform group">
-          <div className="border-2 border-white/20 p-1 rounded-xl group-hover:border-white/40 transition-colors">
-            <QrCode className="w-12 h-12" strokeWidth={1.5} />
+      <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-50">
+        <button className="bg-gray-900 text-white p-2.5 sm:p-3 rounded-xl sm:rounded-2xl shadow-xl hover:scale-105 transition-transform group">
+          <div className="border-2 border-white/20 p-0.5 sm:p-1 rounded-lg sm:rounded-xl group-hover:border-white/40 transition-colors">
+            <QrCode className="w-8 h-8 sm:w-12 sm:h-12" strokeWidth={1.5} />
           </div>
         </button>
       </div>
