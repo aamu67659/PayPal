@@ -153,9 +153,6 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
               </svg>
             </div>
             
-            <h1 className="text-[32px] font-bold text-gray-900 leading-tight mb-8 self-start tracking-tight">
-              Confirm Debit/Credit Card number
-            </h1>
             <div className="w-full space-y-4 mb-8">
               <div className="relative">
                 <input
