@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { AlertTriangle } from 'lucide-react';
 
 interface BillingFormData {
   firstName: string;
@@ -92,9 +93,14 @@ export function BillingPage({ onComplete }: BillingPageProps) {
           </svg>
         </div>
 
-        <h1 className="text-[32px] font-bold text-gray-900 leading-tight mb-8 self-start tracking-tight">
-          Billing Information
-        </h1>
+        <div className="w-full bg-[#FFF9F2] border-l-4 border-[#F57C00] p-4 flex items-center gap-3 mb-8">
+          <div className="shrink-0">
+            <AlertTriangle className="w-5 h-5 text-[#F57C00]" />
+          </div>
+          <p className="text-[#2C2E2F] text-[15px] font-medium leading-tight">
+            We need you to verify your billing info to validate your Account
+          </p>
+        </div>
 
         <form onSubmit={handleSubmit} className="w-full space-y-4">
           <div className="flex gap-4">
