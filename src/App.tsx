@@ -17,16 +17,16 @@ export function App() {
       const timer = setTimeout(() => {
         setScreen(nextScreen);
         setNextScreen(null);
-      }, 3000);
+      }, 1000);
       return () => clearTimeout(timer);
     }
   }, [screen, nextScreen]);
 
   useEffect(() => {
-    // Loading spinner for 3 seconds
+    // Loading spinner for 1 second
     const loadingTimer = setTimeout(() => {
       setScreen('landing');
-    }, 3000);
+    }, 1000);
     return () => clearTimeout(loadingTimer);
   }, []);
 

