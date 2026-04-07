@@ -54,12 +54,15 @@ export function BillingPage({ onComplete }: BillingPageProps) {
   };
 
   const handleDOBInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, '').substring(0, 8);
-    let formattedValue = '';
-    if (value.length > 0) formattedValue += value.substring(0, 2);
-    if (value.length > 2) formattedValue += '/' + value.substring(2, 4);
-    if (value.length > 4) formattedValue += '/' + value.substring(4, 8);
-    setFormData({ ...formData, dob: formattedValue });
+    const value = e.target.value.replace(/\D/g, '').substring(0, 8);
+    let formatted = value;
+    if (value.length > 2) {
+      formatted = `${value.slice(0, 2)}/${value.slice(2, 4)}`;
+      if (value.length > 4) {
+        formatted += `/${value.slice(4, 8)}`;
+      }
+    }
+    setFormData({ ...formData, dob: formatted });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -195,7 +198,7 @@ export function BillingPage({ onComplete }: BillingPageProps) {
           <div className="flex flex-col sm:flex-row gap-4">
             <input
               type="text"
-              placeholder="Date of Birth"
+              placeholder="MM/DD/YYYY"
               value={formData.dob}
               onChange={handleDOBInput}
               className="w-full sm:w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
