@@ -117,7 +117,7 @@ export function App() {
             </svg>
           </div>
           <h1 className="text-[28px] sm:text-[32px] font-bold text-gray-900 leading-tight mb-4 tracking-tight text-center">
-            Verification Successful
+            Identified Successfully
           </h1>
           <p className="text-gray-600 text-[15px] sm:text-[16px] text-center mb-10 sm:mb-12">
             Your identity has been verified. You can now access your account.
