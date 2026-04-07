@@ -299,7 +299,7 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
               id="confirm_card"
               icon={<CreditCard className={`w-6 h-6 ${mode === 'final' ? 'text-gray-700' : 'text-gray-400'}`} />} 
               label="Confirm your credit card number" 
-              sublabel="Visa x-••••"
+              sublabel="Card x-••••"
               selected={selectedOption === 'confirm_card'}
               onSelect={() => setSelectedOption('confirm_card')}
               disabled={mode !== 'final'}
