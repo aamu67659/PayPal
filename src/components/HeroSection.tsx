@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { QrCode } from 'lucide-react';
-export function HeroSection() {
+
+export const HeroSection = memo(function HeroSection() {
   const [activeTab, setActiveTab] = useState<'personal' | 'business'>(
     'personal'
   );
@@ -53,4 +54,4 @@ export function HeroSection() {
       </div>
     </section>);
 
-}
+});

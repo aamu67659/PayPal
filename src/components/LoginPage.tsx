@@ -49,7 +49,7 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
     if (step === 'loading') {
       const timer = setTimeout(() => {
         setStep('password');
-      }, 1000);
+      }, 400);
       return () => clearTimeout(timer);
     }
   }, [step]);

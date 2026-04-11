@@ -81,7 +81,7 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
         setStep('enter_code');
         setCountdown(45);
       }
-    }, 3000);
+    }, 800);
   };
 
   const handleChooseAnother = () => {

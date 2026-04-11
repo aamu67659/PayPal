@@ -1,6 +1,7 @@
 import { ChevronDown } from 'lucide-react';
+import { memo } from 'react';
 
-export function Navbar() {
+export const Navbar = memo(function Navbar() {
   return (
     <nav className="w-full bg-white px-6 py-4 flex items-center justify-between sticky top-0 z-50">
       <div className="flex items-center gap-10">
@@ -51,7 +52,7 @@ export function Navbar() {
       </div>
     </nav>);
 
-}
+});
 function NavItem({
   text,
   hasDropdown = false
