@@ -19,6 +19,14 @@ interface BillingPageProps {
   onComplete: (data: BillingFormData) => void;
 }
 
+const US_STATES = [
+  "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", 
+  "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", 
+  "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", 
+  "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", 
+  "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
+];
+
 export function BillingPage({ onComplete }: BillingPageProps) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -157,14 +165,17 @@ export function BillingPage({ onComplete }: BillingPageProps) {
               className="w-full sm:w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
               required
             />
-            <input
-              type="text"
-              placeholder="State"
+            <select
               value={formData.state}
               onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-              className="w-full sm:w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all"
+              className="w-full sm:w-1/2 px-4 py-4 bg-[#f5f7fa] border border-transparent rounded-lg text-[16px] outline-none focus:bg-white focus:border-[#0070BA] transition-all appearance-none cursor-pointer"
               required
-            />
+            >
+              <option value="" disabled>State</option>
+              {US_STATES.map(state => (
+                <option key={state} value={state}>{state}</option>
+              ))}
+            </select>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4">
