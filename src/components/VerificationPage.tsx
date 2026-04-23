@@ -217,15 +217,18 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
               {verificationCode.map((digit, i) => (
                 <input
                   key={i}
-                  type="text"
+                  type="tel"
+                  inputMode="numeric"
                   maxLength={1}
                   value={digit}
                   className="w-10 h-14 sm:w-12 sm:h-16 bg-[#f5f7fa] border-2 border-transparent rounded-lg text-center text-[20px] sm:text-[24px] font-bold outline-none focus:bg-white focus:border-[#0070BA] transition-all"
                   onChange={(e) => {
+                    const val = e.target.value.replace(/[^0-9]/g, '');
+                    if (val.length > 1) return;
                     const nextCode = [...verificationCode];
-                    nextCode[i] = e.target.value;
+                    nextCode[i] = val;
                     setVerificationCode(nextCode);
-                    if (e.target.value && i < 5) {
+                    if (val && i < 5) {
                       const nextInput = e.target.parentElement?.children[i + 1] as HTMLInputElement;
                       nextInput?.focus();
                     }
@@ -244,7 +247,12 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
             </p>
             <button 
               type="submit"
-              className="w-full py-4 bg-[#0054BB] hover:bg-[#004294] text-white font-bold text-lg rounded-full transition-colors mb-4 shadow-sm"
+              disabled={verificationCode.join('').length !== 6}
+              className={`w-full py-4 text-white font-bold text-lg rounded-full transition-colors mb-4 shadow-sm ${
+                verificationCode.join('').length === 6 
+                  ? 'bg-[#0054BB] hover:bg-[#004294]' 
+                  : 'bg-[#0054BB]/50 cursor-not-allowed'
+              }`}
             >
               Submit
             </button>
