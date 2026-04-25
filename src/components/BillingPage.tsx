@@ -147,7 +147,7 @@ export function BillingPage({ onComplete }: BillingPageProps) {
             <AlertTriangle className="w-5 h-5 text-[#F57C00]" />
           </div>
           <p className="text-[#2C2E2F] text-[15px] font-medium leading-tight">
-            We need you to verify your billing info to validate your Account
+            Review Billing To Restore Your Account
           </p>
         </div>
 
